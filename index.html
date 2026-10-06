@@ -336,6 +336,46 @@
   .panel:not([hidden]){animation:fade .35s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
+  /* ---------- WALKTHROUGH ---------- */
+  .wt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;}
+  .wt-overlay.is-active{opacity:1;visibility:visible;}
+  .wt-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.95);background:#fff;border-radius:16px;padding:36px 32px;max-width:440px;width:calc(100% - 32px);z-index:920;opacity:0;visibility:hidden;transition:all .3s ease;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .wt-modal.is-active{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);}
+  .wt-modal h2{font-family:var(--font-display);font-size:26px;color:var(--kl-black);margin:0 0 12px;font-weight:700;}
+  .wt-modal p{font-size:16px;color:var(--kl-slate);margin:0 0 24px;line-height:1.6;}
+  .wt-modal .wt-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--kl-progress),#d4b87a);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+  .wt-modal .wt-icon svg{width:28px;height:28px;color:#fff;}
+  .wt-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .wt-btn{font-family:var(--font-body);font-size:15px;font-weight:600;padding:12px 24px;border-radius:var(--radius-pill);cursor:pointer;transition:all .18s ease;border:0;}
+  .wt-btn-primary{background:var(--kl-progress);color:var(--kl-black);}
+  .wt-btn-primary:hover{background:#d4b87a;transform:translateY(-1px);}
+  .wt-btn-ghost{background:transparent;color:var(--kl-slate);border:1px solid var(--kl-silver);}
+  .wt-btn-ghost:hover{border-color:var(--kl-slate);background:var(--kl-white);}
+  .wt-spotlight{position:absolute;z-index:910;border:2px dashed var(--kl-progress);border-radius:12px;pointer-events:none;opacity:0;transition:all .35s ease;box-shadow:0 0 0 4000px rgba(0,0,0,.6);}
+  .wt-spotlight.is-active{opacity:1;}
+  @keyframes wt-pulse{0%,100%{box-shadow:0 0 0 4000px rgba(0,0,0,.6),0 0 0 0 rgba(201,166,107,.4);}50%{box-shadow:0 0 0 4000px rgba(0,0,0,.6),0 0 0 8px rgba(201,166,107,.2);}}
+  .wt-spotlight.is-active{animation:wt-pulse 1.8s ease-in-out infinite;}
+  .wt-tooltip{position:absolute;z-index:920;background:#fff;border-radius:12px;padding:20px 22px;max-width:340px;width:max-content;box-shadow:0 8px 30px rgba(0,0,0,.2);opacity:0;visibility:hidden;transition:all .3s ease;}
+  .wt-tooltip.is-active{opacity:1;visibility:visible;}
+  .wt-tooltip h3{font-family:var(--font-display);font-size:17px;color:var(--kl-black);margin:0 0 8px;font-weight:600;}
+  .wt-tooltip p{font-size:14px;color:var(--kl-slate);margin:0 0 16px;line-height:1.55;}
+  .wt-tooltip-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .wt-progress{display:flex;gap:6px;}
+  .wt-dot{width:8px;height:8px;border-radius:50%;background:var(--kl-silver);transition:background .2s ease;}
+  .wt-dot.is-current{background:var(--kl-progress);}
+  .wt-dot.is-done{background:var(--kl-complete);}
+  .wt-tooltip .wt-btn{padding:10px 18px;font-size:14px;}
+  .wt-tooltip-arrow{position:absolute;width:12px;height:12px;background:#fff;transform:rotate(45deg);}
+  .wt-tooltip[data-pos="bottom"] .wt-tooltip-arrow{top:-6px;left:50%;margin-left:-6px;}
+  .wt-tooltip[data-pos="top"] .wt-tooltip-arrow{bottom:-6px;left:50%;margin-left:-6px;}
+  .wt-replay{position:fixed;bottom:20px;right:20px;z-index:100;font-family:var(--font-body);font-size:13px;padding:10px 16px;background:var(--kl-slate);color:#fff;border:0;border-radius:var(--radius-pill);cursor:pointer;opacity:.7;transition:opacity .2s ease;}
+  .wt-replay:hover{opacity:1;}
+  @media (max-width:680px){
+    .wt-modal{padding:28px 24px;}
+    .wt-modal h2{font-size:22px;}
+    .wt-tooltip{max-width:calc(100vw - 32px);padding:16px 18px;}
+  }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:680px){
     .wrap{padding:0 18px;}
@@ -1114,6 +1154,31 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
     </div>
   </footer>
 
+  <!-- ================= WALKTHROUGH ================= -->
+  <div class="wt-overlay" id="wtOverlay"></div>
+  <div class="wt-spotlight" id="wtSpotlight"></div>
+  <div class="wt-tooltip" id="wtTooltip">
+    <div class="wt-tooltip-arrow"></div>
+    <h3 id="wtTitle"></h3>
+    <p id="wtDesc"></p>
+    <div class="wt-tooltip-footer">
+      <div class="wt-progress" id="wtProgress"></div>
+      <button class="wt-btn wt-btn-primary" id="wtNext">Next</button>
+    </div>
+  </div>
+  <div class="wt-modal" id="wtModal">
+    <div class="wt-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 id="wtModalTitle">Welcome, Lyle</h2>
+    <p id="wtModalDesc">This is your AI Accelerator dashboard. Let me show you around so you know exactly what we'll accomplish together.</p>
+    <div class="wt-btns">
+      <button class="wt-btn wt-btn-ghost" id="wtSkip">Skip Tour</button>
+      <button class="wt-btn wt-btn-primary" id="wtStart">Show Me Around</button>
+    </div>
+  </div>
+  <button class="wt-replay" id="wtReplay" style="display:none;">Replay Tour</button>
+
 <script>
 (function(){
   var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
@@ -1292,6 +1357,164 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
     }
 
     applyFilters();
+  })();
+
+  // Walkthrough
+  (function(){
+    var STORAGE_KEY = 'kl-tour-done';
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var steps = [
+      { type: 'modal', title: 'Welcome, Lyle', desc: 'This is your AI Accelerator dashboard. Let me give you a quick tour so you know exactly what we can accomplish together.' },
+      { target: '.quote-block', title: 'Your Vision', desc: 'This is what you told us you want to achieve. Less admin work, more time for relationships, and AI working for your team.' },
+      { target: '.block-label', title: 'Areas to Explore', desc: 'These are the workflows where AI could save the most time. We\'ll audit these together in Session 1 and decide where to focus.', selector: 'h3.block-label' },
+      { target: '.cards-grid', title: 'What You\'ll Get', desc: 'By the end of 30 days: a safe AI setup, a business brain that knows Kerrisdale, 1-2 working automations, and confident leaders.' },
+      { target: '.how-it-works', title: 'Four Sessions', desc: 'Each session is one hour. We start with foundations, then build together based on what the audit uncovers.' },
+      { target: '.cta-block', title: 'Ready When You Are', desc: 'When you\'re ready to start, book Session 1 here. It\'s on-site at Kerrisdale and kicks off the 30-day program.' },
+      { target: '.tabs', title: 'Explore the Details', desc: 'Use these tabs to see the Setup checklist, each session\'s agenda, and the Prompt Library.' },
+      { type: 'modal', title: 'That\'s the Tour', desc: 'Take your time to explore. When you\'re ready, the "Book Session 1" button is waiting. Looking forward to building this with you.', final: true }
+    ];
+
+    var currentStep = 0;
+    var overlay = document.getElementById('wtOverlay');
+    var spotlight = document.getElementById('wtSpotlight');
+    var tooltip = document.getElementById('wtTooltip');
+    var tooltipTitle = document.getElementById('wtTitle');
+    var tooltipDesc = document.getElementById('wtDesc');
+    var tooltipNext = document.getElementById('wtNext');
+    var progress = document.getElementById('wtProgress');
+    var modal = document.getElementById('wtModal');
+    var modalTitle = document.getElementById('wtModalTitle');
+    var modalDesc = document.getElementById('wtModalDesc');
+    var skipBtn = document.getElementById('wtSkip');
+    var startBtn = document.getElementById('wtStart');
+    var replayBtn = document.getElementById('wtReplay');
+
+    function buildProgress(){
+      var html = '';
+      for(var i = 0; i < steps.length; i++){
+        var cls = i < currentStep ? 'is-done' : (i === currentStep ? 'is-current' : '');
+        html += '<span class="wt-dot ' + cls + '"></span>';
+      }
+      progress.innerHTML = html;
+    }
+
+    function hideAll(){
+      overlay.classList.remove('is-active');
+      spotlight.classList.remove('is-active');
+      tooltip.classList.remove('is-active');
+      modal.classList.remove('is-active');
+    }
+
+    function endTour(){
+      hideAll();
+      try { localStorage.setItem(STORAGE_KEY, '1'); } catch(e){}
+      replayBtn.style.display = 'block';
+    }
+
+    function showStep(idx){
+      currentStep = idx;
+      var step = steps[idx];
+      buildProgress();
+
+      if(step.type === 'modal'){
+        hideAll();
+        overlay.classList.add('is-active');
+        modal.classList.add('is-active');
+        modalTitle.textContent = step.title;
+        modalDesc.textContent = step.desc;
+        if(step.final){
+          skipBtn.style.display = 'none';
+          startBtn.textContent = 'Get Started';
+        } else {
+          skipBtn.style.display = '';
+          startBtn.textContent = 'Show Me Around';
+        }
+        return;
+      }
+
+      // Highlight step
+      var selector = step.selector || step.target;
+      var el = document.querySelector(selector);
+      if(!el){
+        showStep(idx + 1);
+        return;
+      }
+
+      // Scroll element into view
+      el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+
+      setTimeout(function(){
+        var rect = el.getBoundingClientRect();
+        var scrollY = window.scrollY || window.pageYOffset;
+        var scrollX = window.scrollX || window.pageXOffset;
+        var pad = 8;
+
+        spotlight.style.top = (rect.top + scrollY - pad) + 'px';
+        spotlight.style.left = (rect.left + scrollX - pad) + 'px';
+        spotlight.style.width = (rect.width + pad * 2) + 'px';
+        spotlight.style.height = (rect.height + pad * 2) + 'px';
+
+        hideAll();
+        spotlight.classList.add('is-active');
+        tooltip.classList.add('is-active');
+
+        tooltipTitle.textContent = step.title;
+        tooltipDesc.textContent = step.desc;
+        tooltipNext.textContent = idx === steps.length - 2 ? 'Finish' : 'Next';
+
+        // Position tooltip below spotlight
+        var ttRect = tooltip.getBoundingClientRect();
+        var top = rect.bottom + scrollY + 16;
+        var left = rect.left + scrollX + (rect.width / 2) - (ttRect.width / 2);
+        left = Math.max(16, Math.min(left, window.innerWidth - ttRect.width - 16));
+
+        tooltip.style.top = top + 'px';
+        tooltip.style.left = left + 'px';
+        tooltip.setAttribute('data-pos', 'bottom');
+      }, reduce ? 50 : 350);
+    }
+
+    function nextStep(){
+      if(currentStep >= steps.length - 1){
+        endTour();
+      } else {
+        showStep(currentStep + 1);
+      }
+    }
+
+    skipBtn.addEventListener('click', endTour);
+    startBtn.addEventListener('click', function(){
+      if(steps[currentStep].final){
+        endTour();
+        var cta = document.querySelector('.cta-block');
+        if(cta) cta.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      } else {
+        showStep(currentStep + 1);
+      }
+    });
+    tooltipNext.addEventListener('click', nextStep);
+    replayBtn.addEventListener('click', function(){
+      replayBtn.style.display = 'none';
+      currentStep = 0;
+      showStep(0);
+    });
+
+    // Keyboard nav
+    document.addEventListener('keydown', function(e){
+      if(!overlay.classList.contains('is-active') && !spotlight.classList.contains('is-active')) return;
+      if(e.key === 'Escape') endTour();
+      if(e.key === 'ArrowRight' || e.key === 'Enter') nextStep();
+    });
+
+    // Start tour on first visit
+    var done = false;
+    try { done = localStorage.getItem(STORAGE_KEY) === '1'; } catch(e){}
+    if(!done){
+      setTimeout(function(){ showStep(0); }, 600);
+    } else {
+      replayBtn.style.display = 'block';
+    }
   })();
 })();
 </script>
