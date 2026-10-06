@@ -1450,46 +1450,54 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
 
         var rect = el2.getBoundingClientRect();
         var pad = 12;
+        var sTop = rect.top - pad;
+        var sLeft = rect.left - pad;
+        var sWidth = rect.width + pad * 2;
+        var sHeight = rect.height + pad * 2;
 
-        // Position spotlight using cssText to ensure styles apply
-        spotlight.style.cssText = 'position:fixed;z-index:910;border:2px dashed #C9A66B;border-radius:12px;pointer-events:none;' +
-          'top:' + (rect.top - pad) + 'px;' +
-          'left:' + (rect.left - pad) + 'px;' +
-          'width:' + (rect.width + pad * 2) + 'px;' +
-          'height:' + (rect.height + pad * 2) + 'px;' +
-          'box-shadow:0 0 0 4000px rgba(0,0,0,.6);' +
-          'animation:wt-pulse 1.8s ease-in-out infinite;';
+        // Hide everything first
+        overlay.classList.remove('is-active');
+        spotlight.classList.remove('is-active');
+        tooltip.classList.remove('is-active');
+        modal.classList.remove('is-active');
 
-        hideAll();
-        spotlight.classList.add('is-active');
+        // Set spotlight position with all styles inline
+        spotlight.setAttribute('style',
+          'position:fixed;' +
+          'top:' + sTop + 'px;' +
+          'left:' + sLeft + 'px;' +
+          'width:' + sWidth + 'px;' +
+          'height:' + sHeight + 'px;' +
+          'z-index:910;' +
+          'border:2px dashed #C9A66B;' +
+          'border-radius:12px;' +
+          'pointer-events:none;' +
+          'opacity:1;' +
+          'box-shadow:0 0 0 4000px rgba(0,0,0,0.65);'
+        );
 
         tooltipTitle.textContent = step.title;
         tooltipDesc.textContent = step.desc;
         tooltipNext.textContent = idx === steps.length - 2 ? 'Finish' : 'Next';
 
-        // Position tooltip
-        var spaceBelow = window.innerHeight - rect.bottom;
-        var ttTop, ttLeft;
+        // Position tooltip below the element
+        var ttTop = rect.bottom + 20;
+        var ttLeft = Math.max(20, Math.min(rect.left, window.innerWidth - 360));
 
-        // First show tooltip to measure it
-        tooltip.style.cssText = 'position:fixed;z-index:920;background:#fff;border-radius:12px;padding:20px 22px;max-width:340px;box-shadow:0 8px 30px rgba(0,0,0,.2);left:0;top:0;opacity:0;visibility:visible;';
-        var ttRect = tooltip.getBoundingClientRect();
-
-        if(spaceBelow > ttRect.height + 40){
-          ttTop = rect.bottom + 20;
-          tooltip.setAttribute('data-pos', 'bottom');
-        } else {
-          ttTop = Math.max(20, rect.top - ttRect.height - 20);
-          tooltip.setAttribute('data-pos', 'top');
-        }
-
-        ttLeft = rect.left + (rect.width / 2) - (ttRect.width / 2);
-        ttLeft = Math.max(16, Math.min(ttLeft, window.innerWidth - ttRect.width - 16));
-
-        tooltip.style.top = ttTop + 'px';
-        tooltip.style.left = ttLeft + 'px';
-        tooltip.style.opacity = '1';
-        tooltip.classList.add('is-active');
+        tooltip.setAttribute('style',
+          'position:fixed;' +
+          'top:' + ttTop + 'px;' +
+          'left:' + ttLeft + 'px;' +
+          'z-index:920;' +
+          'background:#fff;' +
+          'border-radius:12px;' +
+          'padding:20px 22px;' +
+          'max-width:340px;' +
+          'box-shadow:0 8px 30px rgba(0,0,0,0.25);' +
+          'opacity:1;' +
+          'visibility:visible;'
+        );
+        tooltip.setAttribute('data-pos', 'bottom');
       }, reduce ? 150 : 500);
     }
 
