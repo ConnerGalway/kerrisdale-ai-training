@@ -289,7 +289,8 @@
   .pc-notes b{color:var(--kl-slate);font-weight:600;}
 
   /* Collapsible card body */
-  .pc-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;cursor:pointer;}
+  .pc-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;cursor:pointer;margin:-22px -24px;padding:22px 24px;border-radius:var(--radius-card) var(--radius-card) 0 0;transition:background .15s ease;}
+  .pc-header:hover{background:rgba(0,0,0,.03);}
   .pc-header-content{flex:1;min-width:0;}
   .pc-toggle{flex:0 0 auto;appearance:none;background:#fff;border:1px solid var(--kl-silver);border-radius:6px;padding:6px 10px;
     font-family:var(--font-label);font-size:11px;letter-spacing:.06em;color:var(--kl-slate);cursor:pointer;
@@ -918,18 +919,18 @@
             <input type="search" id="libSearch" placeholder="Search prompts..." aria-label="Search the prompt library">
           </div>
           <div class="lib-chips" role="group" aria-label="Filter prompts by department">
-            <button class="lib-chip" type="button" data-filter="all" aria-pressed="true">All <span class="n">(2)</span></button>
-            <button class="lib-chip" type="button" data-filter="collections" aria-pressed="false">Collections</button>
-            <button class="lib-chip" type="button" data-filter="sales" aria-pressed="false">Sales</button>
-            <button class="lib-chip" type="button" data-filter="quotes" aria-pressed="false">Quotes</button>
-            <button class="lib-chip" type="button" data-filter="ap" aria-pressed="false">AP and Receiving</button>
-            <button class="lib-chip" type="button" data-filter="leadership" aria-pressed="false">Leadership</button>
+            <button class="lib-chip" type="button" data-filter="all" aria-pressed="true">All <span class="n"></span></button>
+            <button class="lib-chip" type="button" data-filter="collections" aria-pressed="false">Collections <span class="n"></span></button>
+            <button class="lib-chip" type="button" data-filter="sales" aria-pressed="false">Sales <span class="n"></span></button>
+            <button class="lib-chip" type="button" data-filter="quotes" aria-pressed="false">Quotes <span class="n"></span></button>
+            <button class="lib-chip" type="button" data-filter="ap" aria-pressed="false">AP and Receiving <span class="n"></span></button>
+            <button class="lib-chip" type="button" data-filter="leadership" aria-pressed="false">Leadership <span class="n"></span></button>
           </div>
           <p class="lib-count" id="libCount">Showing <b>2</b> of 2 prompts</p>
         </div>
 
         <!-- TEMPLATE: copy this card for each new prompt
-        <article class="prompt-card" data-dept="collections" data-search="keywords here">
+        <article class="prompt-card is-collapsed" data-dept="collections" data-search="keywords here">
           <div class="pc-header">
             <div class="pc-header-content">
               <div class="pc-top">
@@ -963,7 +964,7 @@
         <div class="prompt-list" id="promptList">
 
           <!-- STARTER: Collections Reminder -->
-          <article class="prompt-card" data-dept="collections" data-search="collections reminder overdue past due payment firm friendly account">
+          <article class="prompt-card is-collapsed" data-dept="collections" data-search="collections reminder overdue past due payment firm friendly account">
             <div class="pc-header">
               <div class="pc-header-content">
                 <div class="pc-top">
@@ -1012,7 +1013,7 @@ Format: A short email (under 150 words) with a clear subject line. Keep the tone
           </article>
 
           <!-- STARTER: Sales Follow-up -->
-          <article class="prompt-card" data-dept="sales" data-search="sales follow up quote multifamily project timing message">
+          <article class="prompt-card is-collapsed" data-dept="sales" data-search="sales follow up quote multifamily project timing message">
             <div class="pc-header">
               <div class="pc-header-content">
                 <div class="pc-top">
@@ -1178,6 +1179,18 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
     var liveRegion = document.getElementById('libLiveRegion');
     var currentFilter = 'all';
 
+    function updateChipCounts(){
+      chips.forEach(function(chip){
+        var filter = chip.getAttribute('data-filter');
+        var count = 0;
+        cards.forEach(function(card){
+          if(filter === 'all' || card.getAttribute('data-dept') === filter) count++;
+        });
+        var span = chip.querySelector('.n');
+        if(span) span.textContent = '(' + count + ')';
+      });
+    }
+
     function applyFilters(){
       var term = (searchInput.value || '').trim().toLowerCase();
       var visible = 0;
@@ -1194,6 +1207,8 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
       countEl.innerHTML = 'Showing <b>' + visible + '</b> of ' + cards.length + ' prompts';
       emptyEl.hidden = visible !== 0;
     }
+
+    updateChipCounts();
 
     chips.forEach(function(chip){
       chip.addEventListener('click', function(){
