@@ -351,11 +351,11 @@
   .wt-btn-primary:hover{background:#d4b87a;transform:translateY(-1px);}
   .wt-btn-ghost{background:transparent;color:var(--kl-slate);border:1px solid var(--kl-silver);}
   .wt-btn-ghost:hover{border-color:var(--kl-slate);background:var(--kl-white);}
-  .wt-spotlight{position:absolute;z-index:910;border:2px dashed var(--kl-progress);border-radius:12px;pointer-events:none;opacity:0;transition:all .35s ease;box-shadow:0 0 0 4000px rgba(0,0,0,.6);}
+  .wt-spotlight{position:fixed;z-index:910;border:2px dashed var(--kl-progress);border-radius:12px;pointer-events:none;opacity:0;transition:all .35s ease;box-shadow:0 0 0 4000px rgba(0,0,0,.6);}
   .wt-spotlight.is-active{opacity:1;}
   @keyframes wt-pulse{0%,100%{box-shadow:0 0 0 4000px rgba(0,0,0,.6),0 0 0 0 rgba(201,166,107,.4);}50%{box-shadow:0 0 0 4000px rgba(0,0,0,.6),0 0 0 8px rgba(201,166,107,.2);}}
   .wt-spotlight.is-active{animation:wt-pulse 1.8s ease-in-out infinite;}
-  .wt-tooltip{position:absolute;z-index:920;background:#fff;border-radius:12px;padding:20px 22px;max-width:340px;width:max-content;box-shadow:0 8px 30px rgba(0,0,0,.2);opacity:0;visibility:hidden;transition:all .3s ease;}
+  .wt-tooltip{position:fixed;z-index:920;background:#fff;border-radius:12px;padding:20px 22px;max-width:340px;width:max-content;box-shadow:0 8px 30px rgba(0,0,0,.2);opacity:0;visibility:hidden;transition:all .3s ease;}
   .wt-tooltip.is-active{opacity:1;visibility:visible;}
   .wt-tooltip h3{font-family:var(--font-display);font-size:17px;color:var(--kl-black);margin:0 0 8px;font-weight:600;}
   .wt-tooltip p{font-size:14px;color:var(--kl-slate);margin:0 0 16px;line-height:1.55;}
@@ -1366,13 +1366,13 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
 
     var steps = [
       { type: 'modal', title: 'Welcome, Lyle', desc: 'This is your AI Accelerator dashboard. Let me give you a quick tour so you know exactly what we can accomplish together.' },
-      { target: '.quote-block', title: 'Your Vision', desc: 'This is what you told us you want to achieve. Less admin work, more time for relationships, and AI working for your team.' },
-      { target: '.block-label', title: 'Areas to Explore', desc: 'These are the workflows where AI could save the most time. We\'ll audit these together in Session 1 and decide where to focus.', selector: 'h3.block-label' },
-      { target: '.cards-grid', title: 'What You\'ll Get', desc: 'By the end of 30 days: a safe AI setup, a business brain that knows Kerrisdale, 1-2 working automations, and confident leaders.' },
-      { target: '.how-it-works', title: 'Four Sessions', desc: 'Each session is one hour. We start with foundations, then build together based on what the audit uncovers.' },
-      { target: '.cta-block', title: 'Ready When You Are', desc: 'When you\'re ready to start, book Session 1 here. It\'s on-site at Kerrisdale and kicks off the 30-day program.' },
-      { target: '.tabs', title: 'Explore the Details', desc: 'Use these tabs to see the Setup checklist, each session\'s agenda, and the Prompt Library.' },
-      { type: 'modal', title: 'That\'s the Tour', desc: 'Take your time to explore. When you\'re ready, the "Book Session 1" button is waiting. Looking forward to building this with you.', final: true }
+      { selector: '#panel-overview .quote-block', title: 'Your Vision', desc: 'This is what you told us you want to achieve. Less admin work, more time for relationships, and AI working for your team.' },
+      { selector: '#panel-overview .data-table', title: 'Areas to Explore', desc: 'These are the workflows where AI could save the most time. We will audit these together in Session 1 and decide where to focus.' },
+      { selector: '#panel-overview .cards-grid', title: 'What You Will Get', desc: 'By the end of 30 days: a safe AI setup, a business brain that knows Kerrisdale, 1-2 working automations, and confident leaders.' },
+      { selector: '#panel-overview .how-it-works', title: 'Four Sessions', desc: 'Each session is one hour. We start with foundations, then build together based on what the audit uncovers.' },
+      { selector: '#panel-overview .cta-block', title: 'Ready When You Are', desc: 'When you are ready to start, book Session 1 here. It is on-site at Kerrisdale and kicks off the 30-day program.' },
+      { selector: '.tabwrap', title: 'Explore the Details', desc: 'Use these tabs to see the Setup checklist, each session agenda, and the Prompt Library.' },
+      { type: 'modal', title: 'That is the Tour', desc: 'Take your time to explore. When you are ready, the Book Session 1 button is waiting. Looking forward to building this with you.', final: true }
     ];
 
     var currentStep = 0;
@@ -1434,8 +1434,7 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
       }
 
       // Highlight step
-      var selector = step.selector || step.target;
-      var el = document.querySelector(selector);
+      var el = document.querySelector(step.selector);
       if(!el){
         showStep(idx + 1);
         return;
@@ -1446,12 +1445,11 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
 
       setTimeout(function(){
         var rect = el.getBoundingClientRect();
-        var scrollY = window.scrollY || window.pageYOffset;
-        var scrollX = window.scrollX || window.pageXOffset;
-        var pad = 8;
+        var pad = 10;
 
-        spotlight.style.top = (rect.top + scrollY - pad) + 'px';
-        spotlight.style.left = (rect.left + scrollX - pad) + 'px';
+        // Position spotlight (fixed positioning - use viewport coords)
+        spotlight.style.top = (rect.top - pad) + 'px';
+        spotlight.style.left = (rect.left - pad) + 'px';
         spotlight.style.width = (rect.width + pad * 2) + 'px';
         spotlight.style.height = (rect.height + pad * 2) + 'px';
 
@@ -1463,16 +1461,28 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
         tooltipDesc.textContent = step.desc;
         tooltipNext.textContent = idx === steps.length - 2 ? 'Finish' : 'Next';
 
-        // Position tooltip below spotlight
+        // Position tooltip below or above spotlight
+        tooltip.style.left = '0';
+        tooltip.style.top = '0';
         var ttRect = tooltip.getBoundingClientRect();
-        var top = rect.bottom + scrollY + 16;
-        var left = rect.left + scrollX + (rect.width / 2) - (ttRect.width / 2);
+        var spaceBelow = window.innerHeight - rect.bottom;
+        var top, pos;
+
+        if(spaceBelow > ttRect.height + 30){
+          top = rect.bottom + 16;
+          pos = 'bottom';
+        } else {
+          top = rect.top - ttRect.height - 16;
+          pos = 'top';
+        }
+
+        var left = rect.left + (rect.width / 2) - (ttRect.width / 2);
         left = Math.max(16, Math.min(left, window.innerWidth - ttRect.width - 16));
 
         tooltip.style.top = top + 'px';
         tooltip.style.left = left + 'px';
-        tooltip.setAttribute('data-pos', 'bottom');
-      }, reduce ? 50 : 350);
+        tooltip.setAttribute('data-pos', pos);
+      }, reduce ? 100 : 400);
     }
 
     function nextStep(){
