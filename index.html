@@ -1444,45 +1444,53 @@ Format: Keep the message practical and warm, like a trusted supplier checking in
       el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
 
       setTimeout(function(){
-        var rect = el.getBoundingClientRect();
-        var pad = 10;
+        // Re-query element after scroll
+        var el2 = document.querySelector(step.selector);
+        if(!el2) return;
 
-        // Position spotlight (fixed positioning - use viewport coords)
-        spotlight.style.top = (rect.top - pad) + 'px';
-        spotlight.style.left = (rect.left - pad) + 'px';
-        spotlight.style.width = (rect.width + pad * 2) + 'px';
-        spotlight.style.height = (rect.height + pad * 2) + 'px';
+        var rect = el2.getBoundingClientRect();
+        var pad = 12;
+
+        // Position spotlight using cssText to ensure styles apply
+        spotlight.style.cssText = 'position:fixed;z-index:910;border:2px dashed #C9A66B;border-radius:12px;pointer-events:none;' +
+          'top:' + (rect.top - pad) + 'px;' +
+          'left:' + (rect.left - pad) + 'px;' +
+          'width:' + (rect.width + pad * 2) + 'px;' +
+          'height:' + (rect.height + pad * 2) + 'px;' +
+          'box-shadow:0 0 0 4000px rgba(0,0,0,.6);' +
+          'animation:wt-pulse 1.8s ease-in-out infinite;';
 
         hideAll();
         spotlight.classList.add('is-active');
-        tooltip.classList.add('is-active');
 
         tooltipTitle.textContent = step.title;
         tooltipDesc.textContent = step.desc;
         tooltipNext.textContent = idx === steps.length - 2 ? 'Finish' : 'Next';
 
-        // Position tooltip below or above spotlight
-        tooltip.style.left = '0';
-        tooltip.style.top = '0';
-        var ttRect = tooltip.getBoundingClientRect();
+        // Position tooltip
         var spaceBelow = window.innerHeight - rect.bottom;
-        var top, pos;
+        var ttTop, ttLeft;
 
-        if(spaceBelow > ttRect.height + 30){
-          top = rect.bottom + 16;
-          pos = 'bottom';
+        // First show tooltip to measure it
+        tooltip.style.cssText = 'position:fixed;z-index:920;background:#fff;border-radius:12px;padding:20px 22px;max-width:340px;box-shadow:0 8px 30px rgba(0,0,0,.2);left:0;top:0;opacity:0;visibility:visible;';
+        var ttRect = tooltip.getBoundingClientRect();
+
+        if(spaceBelow > ttRect.height + 40){
+          ttTop = rect.bottom + 20;
+          tooltip.setAttribute('data-pos', 'bottom');
         } else {
-          top = rect.top - ttRect.height - 16;
-          pos = 'top';
+          ttTop = Math.max(20, rect.top - ttRect.height - 20);
+          tooltip.setAttribute('data-pos', 'top');
         }
 
-        var left = rect.left + (rect.width / 2) - (ttRect.width / 2);
-        left = Math.max(16, Math.min(left, window.innerWidth - ttRect.width - 16));
+        ttLeft = rect.left + (rect.width / 2) - (ttRect.width / 2);
+        ttLeft = Math.max(16, Math.min(ttLeft, window.innerWidth - ttRect.width - 16));
 
-        tooltip.style.top = top + 'px';
-        tooltip.style.left = left + 'px';
-        tooltip.setAttribute('data-pos', pos);
-      }, reduce ? 100 : 400);
+        tooltip.style.top = ttTop + 'px';
+        tooltip.style.left = ttLeft + 'px';
+        tooltip.style.opacity = '1';
+        tooltip.classList.add('is-active');
+      }, reduce ? 150 : 500);
     }
 
     function nextStep(){
