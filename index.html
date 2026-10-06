@@ -220,6 +220,7 @@
   /* Pill button */
   .btn-pill{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--kl-silver);color:var(--kl-black);font-family:var(--font-body);font-size:15px;padding:12px 24px;border-radius:var(--radius-pill);transition:background .18s ease,transform .18s ease;border:0;cursor:pointer;}
   .btn-pill:hover{background:var(--kl-white);transform:translateY(-1px);}
+  .btn-pill.is-disabled{opacity:.5;cursor:not-allowed;pointer-events:none;}
 
   /* Roadmap cards */
   .roadmap-card{background:var(--kl-white);border:1px solid var(--kl-silver);border-radius:var(--radius-card);padding:20px 22px;margin-bottom:16px;}
@@ -677,8 +678,6 @@
           </div>
         </div>
 
-        <p class="focus"><b>Focus:</b> Where AI really saves time, which is admin first.</p>
-
         <div class="block">
           <h3 class="block-label">Session Outline</h3>
           <ul class="outline">
@@ -747,7 +746,7 @@
             <span class="join-date">Date TBC</span>
             <span class="join-time">Time TBC</span>
           </div>
-          <a href="#" class="btn-pill">Join Zoom</a>
+          <button class="btn-pill is-disabled" disabled>Link will be sent before session</button>
         </div>
 
         <p class="focus"><b>Focus:</b> See how much more useful AI gets once it knows the business.</p>
@@ -795,7 +794,7 @@
             <span class="join-date">Date TBC</span>
             <span class="join-time">Time TBC</span>
           </div>
-          <a href="#" class="btn-pill">Join Zoom</a>
+          <button class="btn-pill is-disabled" disabled>Link will be sent before session</button>
         </div>
 
         <p class="focus"><b>Focus:</b> Pull data out of PDFs, photos and messy text.</p>
@@ -844,7 +843,7 @@
             <span class="join-date">Date TBC</span>
             <span class="join-time">Time TBC</span>
           </div>
-          <a href="#" class="btn-pill">Join Zoom</a>
+          <button class="btn-pill is-disabled" disabled>Link will be sent before session</button>
         </div>
 
         <p class="focus"><b>Focus:</b> Refine, test on real data, and hand off.</p>
