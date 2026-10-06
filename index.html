@@ -225,6 +225,23 @@
   .btn-pill:hover{background:var(--kl-white);transform:translateY(-1px);}
   .btn-pill.is-disabled{opacity:.5;cursor:not-allowed;pointer-events:none;}
 
+  /* CTA button */
+  .btn-cta{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--kl-progress);color:var(--kl-black);font-family:var(--font-body);font-size:16px;font-weight:600;padding:14px 28px;border-radius:var(--radius-pill);transition:background .18s ease,transform .18s ease;border:0;cursor:pointer;}
+  .btn-cta:hover{background:#d4b87a;transform:translateY(-2px);}
+  .btn-cta:focus-visible{outline:3px solid var(--kl-progress);outline-offset:3px;}
+
+  /* CTA block */
+  .cta-block{background:linear-gradient(135deg, var(--kl-slate) 0%, #2a2f36 100%);margin:32px -38px -36px;padding:32px 38px;border-radius:0 0 var(--radius-card) var(--radius-card);text-align:center;}
+  .cta-block .block-label{color:var(--kl-white);margin-bottom:8px;}
+  .cta-block p{color:var(--kl-silver);margin:0 0 20px;font-size:16px;}
+
+  /* How it works steps */
+  .how-it-works{display:grid;gap:20px;margin-top:16px;}
+  .hiw-step{display:flex;gap:18px;align-items:flex-start;}
+  .hiw-num{flex:0 0 auto;width:36px;height:36px;background:var(--kl-slate);color:#fff;font-family:var(--font-label);font-size:14px;font-weight:600;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .hiw-content h4{font-family:var(--font-display);font-size:17px;color:var(--kl-black);margin:0 0 6px;font-weight:600;}
+  .hiw-content p{margin:0;font-size:15px;color:var(--kl-slate);line-height:1.55;}
+
   /* Roadmap cards */
   .roadmap-card{background:var(--kl-white);border:1px solid var(--kl-silver);border-radius:var(--radius-card);padding:20px 22px;margin-bottom:16px;}
   .roadmap-card h4{font-family:var(--font-display);font-size:19px;color:var(--kl-black);margin:0 0 8px;font-weight:600;}
@@ -339,6 +356,10 @@
     .data-table{font-size:14px;}
     .data-table th,.data-table td{padding:10px 8px;}
     .cards-grid{grid-template-columns:1fr;}
+    .cta-block{margin:24px -20px -22px;padding:24px 20px;}
+    .btn-cta{width:100%;justify-content:center;padding:14px 20px;}
+    .hiw-step{gap:14px;}
+    .hiw-num{width:32px;height:32px;font-size:13px;}
     .join-block{padding:18px 18px;}
     .join-date{font-size:19px;}
     .foot .wrap{flex-direction:column;align-items:flex-start;}
@@ -444,10 +465,10 @@
     <section class="panel" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
       <div class="card">
         <div class="card-top">
-          <span class="meta-mono">Overview</span>
+          <span class="meta-mono">Program</span>
         </div>
         <h2>Your 30-day AI Accelerator</h2>
-        <p class="one-liner">Four one-hour weekly sessions to set up AI tools that save time on collections, quotes, receiving and leadership admin. Session 1 is on site at Kerrisdale. Sessions 2 to 4 are on site or on Zoom.</p>
+        <p class="one-liner">Four one-hour weekly sessions to set up AI tools that save time on collections, quotes, receiving and leadership admin.</p>
 
         <div class="block">
           <div class="quote-block">
@@ -457,33 +478,7 @@
         </div>
 
         <div class="block">
-          <h3 class="block-label">What the 30 Days Delivers</h3>
-          <div class="cards-grid">
-            <div class="simple-card">
-              <h4>A Licensed, Safe Setup</h4>
-              <p>A shared AI workspace for the leadership team and a one-page AI use policy.</p>
-            </div>
-            <div class="simple-card">
-              <h4>A Kerrisdale Business Brain</h4>
-              <p>A shared AI project loaded with price lists, account terms, the collections policy, product conventions and how Kerrisdale writes to customers.</p>
-            </div>
-            <div class="simple-card">
-              <h4>The Collections Assistant</h4>
-              <p>The main build, working by Session 4. It reads the AR aging report, suggests an escalation step for each account, and drafts reminders and call notes in Kerrisdale's voice.</p>
-            </div>
-            <div class="simple-card">
-              <h4>The Material List Converter</h4>
-              <p>Started in Session 3. It turns a photo, text or email of a material list into clean, SAP-ready line items and flags assumptions to confirm.</p>
-            </div>
-            <div class="simple-card">
-              <h4>A Roadmap for What Comes Next</h4>
-              <p>Takeoff acceleration, automated invoice matching and SAP integration opportunities, prioritised for after the program.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <h3 class="block-label">Where We're Starting</h3>
+          <h3 class="block-label">Where You Are Now</h3>
           <table class="data-table stack-mobile">
             <thead>
               <tr>
@@ -523,7 +518,136 @@
         </div>
 
         <div class="block">
-          <h3 class="block-label">Who's in the Room</h3>
+          <h3 class="block-label">What the 30 Days Delivers</h3>
+          <div class="cards-grid">
+            <div class="simple-card">
+              <h4>A Licensed, Safe Setup</h4>
+              <p>A shared AI workspace for the leadership team and a one-page AI use policy.</p>
+            </div>
+            <div class="simple-card">
+              <h4>A Kerrisdale Business Brain</h4>
+              <p>A shared AI project loaded with price lists, account terms, the collections policy, product conventions and how Kerrisdale writes to customers.</p>
+            </div>
+            <div class="simple-card">
+              <h4>The Collections Assistant</h4>
+              <p>The main build, working by Session 4. It reads the AR aging report, suggests an escalation step for each account, and drafts reminders and call notes in Kerrisdale's voice.</p>
+            </div>
+            <div class="simple-card">
+              <h4>The Material List Converter</h4>
+              <p>Started in Session 3. It turns a photo, text or email of a material list into clean, SAP-ready line items and flags assumptions to confirm.</p>
+            </div>
+            <div class="simple-card">
+              <h4>A Roadmap for What Comes Next</h4>
+              <p>Takeoff acceleration, automated invoice matching and SAP integration opportunities, prioritised for after the program.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3 class="block-label">How It Works</h3>
+          <div class="how-it-works">
+            <div class="hiw-step">
+              <span class="hiw-num">1</span>
+              <div class="hiw-content">
+                <h4>Session 1: Foundations</h4>
+                <p>On site at Kerrisdale. We cover AI basics, set up the team workspace, and audit your workflows to find the biggest time savings.</p>
+              </div>
+            </div>
+            <div class="hiw-step">
+              <span class="hiw-num">2</span>
+              <div class="hiw-content">
+                <h4>Session 2: The Business Brain</h4>
+                <p>We load your price lists, terms and tone of voice into a shared AI project. Then we build the Collections Assistant live.</p>
+              </div>
+            </div>
+            <div class="hiw-step">
+              <span class="hiw-num">3</span>
+              <div class="hiw-content">
+                <h4>Session 3: Documents</h4>
+                <p>We tackle the material list converter and AP invoice matching. Your team learns to pull data from PDFs, photos and messy text.</p>
+              </div>
+            </div>
+            <div class="hiw-step">
+              <span class="hiw-num">4</span>
+              <div class="hiw-content">
+                <h4>Session 4: Refine and Hand Off</h4>
+                <p>We refine everything based on real use, measure results, and hand off a prompt library and 60-day plan.</p>
+              </div>
+            </div>
+          </div>
+          <p class="note">Sessions are one hour each, scheduled around the weekly management meeting or after the morning rush. Sessions 2 to 4 can be on site or Zoom.</p>
+        </div>
+
+        <div class="block">
+          <h3 class="block-label">What We'll Track</h3>
+          <table class="data-table stack-mobile">
+            <thead>
+              <tr>
+                <th>Measure</th>
+                <th>Where You Are Now</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Measure"><b>30-day collection rate</b></td>
+                <td data-label="Where You Are Now">65%</td>
+              </tr>
+              <tr>
+                <td data-label="Measure"><b>Material list quote turnaround</b></td>
+                <td data-label="Where You Are Now">5 minutes to 1 day</td>
+              </tr>
+              <tr>
+                <td data-label="Measure"><b>Leaders using AI daily</b></td>
+                <td data-label="Where You Are Now">1 (Lyle)</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="table-caption">We'll establish detailed baselines in Session 1 and track progress through the program.</p>
+        </div>
+
+        <div class="block cta-block">
+          <h3 class="block-label">Ready to Get Started?</h3>
+          <p>Book a call to confirm the program details and schedule Session 1.</p>
+          <a href="https://calendly.com/conner-galway/ai-for-your-trades-business-coaching-session-clone-1" class="btn-cta" target="_blank" rel="noopener">Book Your First Session</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WEEK 0 SETUP ===================== -->
+    <section class="panel" role="tabpanel" id="panel-s0" aria-labelledby="tab-s0" tabindex="0" hidden>
+      <div class="card">
+        <div class="card-top">
+          <span class="meta-mono">Week 0</span>
+          <span class="meta-dot">&bull;</span>
+          <span class="meta-mono">Pre-Session</span>
+          <span class="badge badge-progress">In Progress</span>
+        </div>
+        <h2>Setup</h2>
+        <p class="one-liner">Decisions and materials to gather before Session 1.</p>
+
+        <div class="block">
+          <h3 class="block-label">Decisions for Lyle</h3>
+          <ul class="checklist">
+            <li>Team licences for the core group (5 to 7 seats). Junction recommends the tool, and the existing ChatGPT account stays if it's earning its place.</li>
+            <li>Approve the one-page AI use policy. Junction drafts it. It covers what is fine to share and what stays out (for example, banking details and staff HR files).</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h3 class="block-label">Materials to Gather</h3>
+          <p style="margin-bottom:14px;"><b>Owner:</b> Assistant GM</p>
+          <ul class="checklist">
+            <li>Current AR aging report exported from SAP. Names can be masked.</li>
+            <li>3 to 5 recent collections emails or notes, including one that worked well and one that didn't.</li>
+            <li>Current credit terms and collections policy, even if informal.</li>
+            <li>3 recent material lists (one handwritten, one texted, one emailed) and the quotes they turned into.</li>
+            <li>Current price lists from Google Docs.</li>
+            <li>2 sets of PO, supplier invoice and marked-up packing slip.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h3 class="block-label">Who Should Attend</h3>
           <table class="data-table stack-mobile">
             <thead>
               <tr>
@@ -570,83 +694,6 @@
               </tr>
             </tbody>
           </table>
-          <p class="note">Sessions sit beside the weekly management meeting or after the morning contractor rush, so customer response times don't suffer.</p>
-        </div>
-
-        <div class="block">
-          <h3 class="block-label">How We'll Measure It</h3>
-          <table class="data-table stack-mobile">
-            <thead>
-              <tr>
-                <th>Measure</th>
-                <th>Baseline</th>
-                <th>Latest</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-label="Measure"><b>30-day collection rate</b></td>
-                <td data-label="Baseline">65%</td>
-                <td data-label="Latest"><!-- RESULTS -->&mdash;</td>
-              </tr>
-              <tr>
-                <td data-label="Measure"><b>AR collections hours per week</b></td>
-                <td data-label="Baseline">TBC in Session 1</td>
-                <td data-label="Latest"><!-- RESULTS -->&mdash;</td>
-              </tr>
-              <tr>
-                <td data-label="Measure"><b>Material list quote turnaround</b></td>
-                <td data-label="Baseline">5 minutes to 1 day</td>
-                <td data-label="Latest"><!-- RESULTS -->&mdash;</td>
-              </tr>
-              <tr>
-                <td data-label="Measure"><b>Leaders using AI daily</b></td>
-                <td data-label="Baseline">1 (Lyle)</td>
-                <td data-label="Latest"><!-- RESULTS -->&mdash;</td>
-              </tr>
-              <tr>
-                <td data-label="Measure"><b>Hours saved per leader per week</b></td>
-                <td data-label="Baseline">TBC in Session 1</td>
-                <td data-label="Latest"><!-- RESULTS -->&mdash;</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="table-caption">Measurements will begin after Session 1.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== WEEK 0 SETUP ===================== -->
-    <section class="panel" role="tabpanel" id="panel-s0" aria-labelledby="tab-s0" tabindex="0" hidden>
-      <div class="card">
-        <div class="card-top">
-          <span class="meta-mono">Week 0</span>
-          <span class="meta-dot">&bull;</span>
-          <span class="meta-mono">Pre-Session</span>
-          <span class="badge badge-progress">In Progress</span>
-        </div>
-        <h2>Setup</h2>
-        <p class="one-liner">Decisions and materials to gather before Session 1.</p>
-
-        <div class="block">
-          <h3 class="block-label">Decisions for Lyle</h3>
-          <ul class="checklist">
-            <li>Team licences for the core group (5 to 7 seats). Junction recommends the tool, and the existing ChatGPT account stays if it's earning its place.</li>
-            <li>Approve the one-page AI use policy. Junction drafts it. It covers what is fine to share and what stays out (for example, banking details and staff HR files).</li>
-          </ul>
-        </div>
-
-        <div class="block">
-          <h3 class="block-label">Materials to Gather</h3>
-          <p style="margin-bottom:14px;"><b>Owner:</b> Assistant GM</p>
-          <ul class="checklist">
-            <li>Current AR aging report exported from SAP. Names can be masked.</li>
-            <li>3 to 5 recent collections emails or notes, including one that worked well and one that didn't.</li>
-            <li>Current credit terms and collections policy, even if informal.</li>
-            <li>3 recent material lists (one handwritten, one texted, one emailed) and the quotes they turned into.</li>
-            <li>Current price lists from Google Docs.</li>
-            <li>2 sets of PO, supplier invoice and marked-up packing slip.</li>
-          </ul>
         </div>
 
         <div class="note">
