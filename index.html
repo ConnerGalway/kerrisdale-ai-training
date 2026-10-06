@@ -51,11 +51,8 @@
     Copy button's data-target attribute.
 
   TO SWAP IN A NEW LOGO:
-  - Base64-encode the new logo using Python:
-      import base64
-      with open('logo.png', 'rb') as f:
-          print(base64.b64encode(f.read()).decode())
-  - Replace the src="data:image/png;base64,..." in the header .brand img
+  - Replace assets/logo.png with the new logo file
+  - Keep the filename as logo.png or update the src in the header img tag
 
   No build step, no dependencies. Just edit and commit.
 ====================================================================
@@ -91,27 +88,16 @@
   .wrap{max-width:1020px;margin:0 auto;padding:0 24px;}
 
   /* ---------- HEADER ---------- */
-  .header{background:var(--kl-black);padding:28px 0 20px;text-align:center;border-bottom:1px solid rgba(128,128,128,.3);}
-  .brand{display:flex;flex-direction:column;align-items:center;gap:18px;}
-  .brand img{display:block;width:120px;height:auto;}
-  .brand-text{text-align:center;}
-  .brand-title{font-family:var(--font-display);font-size:clamp(28px,5vw,42px);color:var(--kl-white);margin:0;font-weight:600;}
-  .brand-sub{font-family:var(--font-label);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--kl-ash);margin-top:6px;}
+  .header{background:var(--kl-black);padding:32px 0 36px;}
+  .header .wrap{display:flex;flex-wrap:wrap;gap:28px 40px;align-items:center;justify-content:space-between;}
+  .header-left{display:flex;flex-wrap:wrap;align-items:center;gap:24px 32px;}
+  .header-left img{display:block;width:240px;height:auto;flex:0 0 auto;}
+  .header-text{max-width:480px;}
+  .header .eyebrow{font-family:var(--font-label);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--kl-ash);margin:0 0 10px;}
+  .header h1{font-family:var(--font-display);font-weight:700;font-size:clamp(32px,5vw,48px);line-height:1.1;margin:0;color:var(--kl-white);}
+  .header .sub{margin:12px 0 0;font-size:16px;color:var(--kl-ash);line-height:1.5;}
 
-  /* ---------- HERO ---------- */
-  .hero{background:var(--kl-black);padding:40px 0 44px;position:relative;}
-  /* Hook for future archival photo with 70% black overlay
-  .hero::before{content:"";position:absolute;inset:0;background:url('archival-photo.jpg') center/cover;opacity:.3;}
-  .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.7);}
-  */
-  .hero .wrap{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:30px;align-items:flex-end;justify-content:space-between;}
-  .hero .lead{max-width:560px;}
-  .hero .eyebrow{font-family:var(--font-label);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--kl-ash);margin:0 0 14px;display:inline-flex;align-items:center;gap:10px;}
-  .hero .eyebrow::before{content:"";width:24px;height:1px;background:var(--kl-steel);display:inline-block;}
-  .hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(32px,5.5vw,52px);line-height:1.1;margin:0;color:var(--kl-white);}
-  .hero .sub{margin:14px 0 0;font-size:16px;color:var(--kl-ash);}
-
-  .progress{flex:1 1 300px;max-width:380px;background:var(--kl-slate);border:1px solid rgba(128,128,128,.3);border-radius:var(--radius-card);padding:16px 18px;}
+  .progress{flex:0 1 340px;background:var(--kl-slate);border:1px solid rgba(128,128,128,.3);border-radius:var(--radius-card);padding:16px 18px;}
   .progress .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
   .progress .label{font-family:var(--font-label);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--kl-ash);}
   .progress .count{font-family:var(--font-display);font-size:14px;color:var(--kl-white);}
@@ -121,12 +107,8 @@
   .progress .next{margin-top:10px;font-size:13px;color:var(--kl-ash);}
   .progress .next b{color:var(--kl-white);font-weight:600;}
 
-  /* Curved divider */
-  .hero-divider{height:40px;background:var(--kl-black);position:relative;overflow:hidden;}
-  .hero-divider::after{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:120%;height:80px;background:var(--kl-white);border-radius:50% 50% 0 0 / 100% 100% 0 0;}
-
   /* ---------- TABS ---------- */
-  .tabwrap{position:sticky;top:0;z-index:50;background:var(--kl-slate);border-bottom:1px solid rgba(128,128,128,.3);}
+  .tabwrap{position:sticky;top:0;z-index:50;background:var(--kl-slate);border-top:1px solid rgba(128,128,128,.3);border-bottom:1px solid rgba(128,128,128,.3);}
   .tabs{max-width:1020px;margin:0 auto;display:flex;gap:2px;padding:0 14px;overflow-x:auto;scrollbar-width:thin;}
   .tabs::-webkit-scrollbar{height:6px;}
   .tabs::-webkit-scrollbar-thumb{background:var(--kl-steel);border-radius:99px;}
@@ -335,9 +317,13 @@
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:680px){
     .wrap{padding:0 18px;}
-    .brand img{width:88px;}
-    .brand-title{font-size:28px;}
-    .hero .wrap{padding-top:30px;padding-bottom:30px;}
+    .header{padding:24px 0 28px;}
+    .header-left{gap:18px 24px;}
+    .header-left img{width:160px;}
+    .header h1{font-size:28px;}
+    .header .eyebrow{font-size:10px;}
+    .header .sub{font-size:15px;}
+    .progress{flex:1 1 100%;}
     .tabs{padding:0 10px;}
     .tab{padding:11px 13px 9px;}
     .tab-t{font-size:14px;}
@@ -373,23 +359,13 @@
   <!-- ================= HEADER ================= -->
   <header class="header">
     <div class="wrap">
-      <div class="brand">
-        <img src="assets/logo.png" width="120" height="120" alt="The Kerrisdale Lumber Company, Est. 1921">
-        <div class="brand-text">
-          <h1 class="brand-title">AI Accelerator</h1>
-          <p class="brand-sub">Kerrisdale Lumber x Junction Consulting</p>
+      <div class="header-left">
+        <img src="assets/logo.png" width="240" height="240" alt="The Kerrisdale Lumber Company, Est. 1921">
+        <div class="header-text">
+          <p class="eyebrow">30-Day Program · Kerrisdale Lumber × Junction Consulting</p>
+          <h1>AI Accelerator</h1>
+          <p class="sub">Four weekly sessions to get AI working for collections, quotes and the leadership team.</p>
         </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ================= HERO ================= -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="lead">
-        <p class="eyebrow">30-Day Program</p>
-        <h1>Your 30-day AI Accelerator</h1>
-        <p class="sub">Four weekly sessions to get AI working for collections, quotes and the leadership team. This dashboard is the shared home for materials, homework and results.</p>
       </div>
       <div class="progress">
         <div class="row">
@@ -405,9 +381,7 @@
         <p class="next"><b>Next up:</b> Week 0 setup</p>
       </div>
     </div>
-  </section>
-
-  <div class="hero-divider"></div>
+  </header>
 
   <!-- ================= TABS ================= -->
   <div class="tabwrap">
